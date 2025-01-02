@@ -1,5 +1,5 @@
 #include "../exercise.h"
-
+#include <cstring>
 // READ: 枚举类型 <https://zh.cppreference.com/w/cpp/language/enum>
 
 // `enum` 是 C 的兼容类型，本质上其对应类型的常量。
@@ -30,15 +30,18 @@ ColorEnum convert_by_pun(Color c) {
     // 但这种写法实际上仅在 C 语言良定义，在 C++ 中是未定义行为。
     // 这是比较少见的 C++ 不与 C 保持兼容的特性。
     // READ: 类型双关 <https://tttapa.github.io/Pages/Programming/Cpp/Practices/type-punning.html>
-    union TypePun {
-        ColorEnum e;
-        Color c;
-    };
+    // union TypePun {
+    //     ColorEnum e;
+    //     Color c;
+    // };
 
-    TypePun pun;
-    // TODO: 补全类型双关转换
-
-    return pun.e;
+    // TypePun pun;
+    // // TODO: 补全类型双关转换
+    // pun.c = c;
+    // return pun.e;
+    ColorEnum result;
+    std::memcpy(&result, &c, sizeof(ColorEnum)); // 使用 memcpy 进行安全的类型转换
+    return result;
 }
 
 int main(int argc, char **argv) {
